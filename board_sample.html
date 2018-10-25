@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/solid.css" integrity="sha384-osqezT+30O6N/vsMqwW8Ch6wKlMofqueuia2H7fePy42uC05rm1G+BUPSd2iBSJL" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/regular.css" integrity="sha384-4e3mPOi7K1/4SAx8aMeZqaZ1Pm4l73ZnRRquHFWzPh2Pa4PMAgZm8/WNh6ydcygU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/fontawesome.css" integrity="sha384-BzCy2fixOYd0HObpx3GMefNqdbA7Qjcc91RgYeDjrHTIEXqiF00jKvgQG0+zY/7I" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="static/css/app.css" media="screen" />
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
+</head>
+<body>
+    <script type="text/javascript" src="./index.js" async="async"></script>
+    <div id="root" class="board-bg-img">
+        <div class="container board-header">
+            <div class="row">
+                <button id="boardNameButton" type="button" class="board-btn board-header-btn board-header-title-btn" onclick="document.getElementById('renameBoardModal').style.display = 'block'">Board name</button>
+                <div id="renameBoardModal" class="board-modal-window" style="top: 50px; left: 30px">
+                    <div class="board-modal-header">
+                        <span class="board-modal-title">Rename board</span>
+                        <a onclick="document.getElementById('renameBoardModal').style.display = 'none'" class="board-modal-icon-close board-align-right fas fa-times"></a>
+                    </div>
+                    <div class="board-modal-body board-modal-scrollbar" style="padding: 12px">
+                        <p class="board-modal-p">Введите новое имя доски:</p>
+                        <input class="board-column-input" value="Board name" onblur="document.getElementById('boardNameButton').style.text = event.target.value;document.getElementById('renameBoardModal').style.display = 'none'">
+                    </div>
+                </div>
+                <button type="button" id="startBtn" class="board-btn board-header-btn board-header-star-btn">&#x2606</button>
+                <hr class="board-header-divider">
+                <button type="button" class="board-btn board-header-btn" onclick="abort('111' + '22');">Персональная</button>
+                <hr class="board-header-divider">
+                <button type="button" class="board-btn board-header-btn" onclick="abort('111' + '22');"><span class="fas fa-lock"></span> Приватная</button>
+                <hr class="board-header-divider">
+                <button type="button" class="board-btn board-header-btn board-align-right" onclick="document.getElementById('boardMenuModal').className = 'board-modal-window board-modal-menu board-modal-menu-active';">&#x22EF Menu</button>
+                <div id="boardMenuModal" class="board-modal-window board-modal-menu">
+                    <div class="board-modal-header">
+                        <span class="board-modal-title">Menu</span>
+                        <a onclick="document.getElementById('boardMenuModal').className = 'board-modal-window board-modal-menu';" class="board-modal-icon-close board-align-right fas fa-times"></a>
+                    </div>
+                    <div class="board-modal-body board-modal-scrollbar" style="padding: 12px">
+                        <ul>
+                            <li><button class="board-btn board-modal-btn"><span class="fas fa-images"></span> Сменить фон</button></li>
+                            <li><button class="board-btn board-modal-btn"><span class="fas fa-pen"></span> Метки</button></li>
+                        </ul>
+                        <hr class="board-modal-divider">
+                        <ul>
+                            <li><input type="text" value="link" class="board-modal-ro-input" readonly></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <!--Columns-->
+                <div class="board-column">
+                    <div class="container board-column-header" style="margin-bottom: 5px">
+                        <div class="row">
+                            <input id="c-0" type="text" class="board-column-input board-column-title-input" value="Column title" onchange="alert(event.target.id + ':' + event.target.value);">
+                            <button type="button" class="board-btn" onclick="document.getElementById('c-0-modal').style.display = 'block'">&#x22EF</button>
+                            <div id="c-0-modal" class="board-modal-window" style="left: 244px; top: 44px;">
+                                <div class="board-modal-header">
+                                    <span class="board-modal-title">Modal</span>
+                                    <a onclick="document.getElementById('c-0-modal').style.display = 'none'" class="board-modal-icon-close board-align-right fas fa-times"></a>
+                                </div>
+                                <div class="board-modal-body board-modal-scrollbar">
+                                    <ul>
+                                        <li><button class="board-btn board-modal-btn">Добавить карточку...</button></li>
+                                        <li><button class="board-btn board-modal-btn">Копировать список...</button></li>
+                                        <li><button class="board-btn board-modal-btn">Переместить список...</button></li>
+                                        <li><button class="board-btn board-modal-btn">Поделиться...</button></li>
+                                    </ul>
+                                    <hr class="board-modal-divider">
+                                    <ul>
+                                        <li><button class="board-btn board-modal-btn">Сортировать по...</button></li>
+                                    </ul>
+                                    <hr class="board-modal-divider">
+                                    <ul>
+                                        <li><button class="board-btn board-modal-btn">Переместить все карточки списка...</button></li>
+                                        <li><button class="board-btn board-modal-btn">Архивировать все карточки списка...</button></li>
+                                    </ul>
+                                    <hr class="board-modal-divider">
+                                    <ul>
+                                        <li><button class="board-btn board-modal-btn">Архивировать список...</button></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<input class="board-column-element board-column-input" value="Element 1">-->
+                    <div class="board-column-element">Element 2</div>
+                    <div class="board-column-element">Element 3</div>
+                    <button class="board-btn board-column-btn">&#x002B Добавить еще одну карточку</button>
+                </div>
+                <div class="board-column" style="background: rgba(0, 0, 0, 0);">
+                    <button class="board-btn board-add-column-button">&#x002B Добавить еще одну колонку</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
