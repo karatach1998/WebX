@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+
+input {
+    outline: none;
+    border: none;
+}
+
+body {
+    margin: 0;
+}
+
+.container-login {
+    min-height: 100vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    alignment: center;
+    padding: 15px;
+}
+
+.form-login {
+    position: relative;
+    min-width: 300px;
+    padding: 15px;
+    background-color: #FFFFFF;
+}
+
+.text-login {
+    margin: 10px;
+    width: 100%;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+}
+
+.text-label {
+    margin: 5px 0;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+}
+
+.input-container {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    margin: 8px 0;
+}
+
+.input-field {
+    overflow: hidden;
+    font-family: Poppins-Medium, sans-serif;
+    font-size: 16px;
+    color: #333333;
+    border: none;
+    border-bottom: 2px solid lightgray;
+    width: 100%;
+    outline: none;
+    padding: 10px 5px;
+}
+
+.underline-animation {
+    transition: all 0.5s;
+    display: block;
+    bottom: 0;
+    left: -100%;
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: black;
+}
+
+.input-field:focus + .underline-animation {
+    left: 0;
+}
+
+.btn {
+    position: relative;
+    font-family: Poppins-Medium, sans-serif;
+    font-size: 18px;
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid #61bd4f;
+    background: none;
+    padding: 10px;
+    z-index: 1;
+    outline: none;
+}
+
+.btn:before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 100%;
+    z-index: -1;
+    transition: top 0.09s ease-in, color 0.09s ease-in;
+}
+
+.btn:hover:before {
+    top: 0;
+}
+
+.btn-login {
+    color: #383736;
+}
+
+.btn-login:hover {
+    color: whitesmoke;
+}
+
+.btn-login:before {
+    background: #61bd4f;
+}
+
+.btn-login-with-google {
+    display: inline-block;
+    position: relative;
+    border: thin solid #4285F4;
+    /*background: #4285F4;*/
+    white-space: nowrap;
+    color: #383736;
+    padding: 5px 10px;
+}
+
+.btn-login-with-google:hover {
+    color: whitesmoke;
+}
+
+.btn-login-with-google:before {
+    background: #4285F4;
+}
+
+.btn-login-with-google-icon {
+    background: url('../images/icons/icon-google.svg') transparent 5px 50% no-repeat;
+    background-size: 34px 34px;
+    display: inline-block;
+    vertical-align: middle;
+    width: 42px;
+    height: 42px;
+}
+
+.btn-login-with-google-text {
+    display: inline-block;
+    vertical-align: middle;
+    padding-left: 21px;
+    padding-right: 42px;
+}
