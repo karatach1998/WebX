@@ -3,34 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <link rel="stylesheet" type="text/css" href="css/login.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/login.css"/>
 </head>
 <body>
-    <div class="container-login">
-        <form class="form-login">
-            <h1 class="text-login">Sign in</h1>
+    <div class="container-login-parent">
+        <div class="container-login-child">
+            <form class="form-login" method="post">
+                <h1 class="text-login">Sign in</h1>
 
-            <div class="input-container">
-                <p class="text-label">Email</p>
-                <input type="email" class="input-field" placeholder="For example: cavin@gmail.com">
-                <span class="underline-animation"/>
+                <div class="input-container">
+                    <p class="text-label">Username</p>
+                    <input type="text" class="input-field" name="username" placeholder="For example: cavin">
+                    <span class="underline-animation"/>
+                </div>
+
+                <div class="input-container">
+                    <p class="text-label">Password</p>
+                    <input type="password" class="input-field" name="password" placeholder="For example: ********">
+                    <span class="underline-animation"/>
+                </div>
+
+                <br>
+                <button class="btn btn-login" type="submit">Sign in</button>
+
+                <br><br>
+                <button class="btn btn-login-with-google">
+                    <span class="btn-login-with-google-icon"></span>
+                    <span class="btn-login-with-google-text">Sign in with Google</span>
+                </button>
+            </form>
+
+            <div class="container-link">
+                <a class="link" href="/users/register">Register</a>
             </div>
-
-            <div class="input-container">
-                <p class="text-label">Password</p>
-                <input type="password" class="input-field" placeholder="For example: ********">
-                <span class="underline-animation"/>
-            </div>
-
-            <br>
-            <button class="btn btn-login">Sign in</button>
-
-            <br><br>
-            <button class="btn btn-login-with-google">
-                <span class="btn-login-with-google-icon"></span>
-                <span class="btn-login-with-google-text">Sign in with Google</span>
-            </button>
-        </form>
+        </div>
     </div>
 </body>
 </html>

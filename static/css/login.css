@@ -9,19 +9,23 @@ body {
     margin: 0;
 }
 
-.container-login {
+.container-login-parent {
     min-height: 100vh;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    alignment: center;
+    padding: 15px;
+}
+
+.container-login-child {
+    display: inline-block;
+    align-content: center;
+    position: relative;
+    min-width: 300px;
     padding: 15px;
 }
 
 .form-login {
-    position: relative;
-    min-width: 300px;
-    padding: 15px;
     background-color: #FFFFFF;
 }
 
@@ -145,4 +149,30 @@ body {
     vertical-align: middle;
     padding-left: 21px;
     padding-right: 42px;
+}
+
+.btn-register {;
+    border: thin solid #db3236;
+    color: #383736;
+}
+
+.btn-register:hover {
+    color: whitesmoke;
+}
+
+.btn-register:before {
+    background: #db3236;
+}
+
+.container-link {
+    margin: 15px;
+}
+
+.link {
+    display: block;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: #4285F4;
+    text-decoration: none;
+    text-align: center;
 }
