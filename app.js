@@ -70,6 +70,9 @@ require('./models/user');
 //
 // });
 
+// Passport config.
+require('./config/passport')(passport);
+
 // Passport middleware.
 app.use(passport.initialize());
 app.use(passport.session());
