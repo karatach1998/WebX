@@ -89,6 +89,9 @@ app.get('*', ensureAuthenticated, (req, res, next) => {
     next();
 });
 
+let users = require('./routes/users');
+app.use('/users', users);
+
 app.get('/', (req, res) => {
     res.sendFile('main_sample.html', {root: __dirname + '/static'});
 });
