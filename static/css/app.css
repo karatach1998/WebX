@@ -8,6 +8,7 @@ body, html {
 .board-bg-img {
     height: 100%;
     background: url("https://pp.userapi.com/c844723/v844723291/11233b/JwDDdQsnNVo.jpg") center;
+    background-attachment: fixed;
     background-size: cover;
 }
 
@@ -80,8 +81,7 @@ body, html {
 .board-column {
     background: #DFE3E6;
     border-radius: 5px;
-    margin-left: 10px;
-    margin-top: 5px;
+    margin: 10px 10px 0 10px;
 }
 
 .board-column-header {
@@ -146,17 +146,24 @@ body, html {
     background: white;
     width: 300px;
     border-radius: 2px;
+    margin: 10px 0 0 25px;
+    min-height: 10%;
+
 }
 
 .board-modal-header {
     height: 40px;
+    display: flex;
     position: relative;
-    margin: 8px;
+    margin: 0 8px 0 8px;
     text-align: center;
     border-bottom: 1px solid #9DABB3;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .board-modal-title {
+    flex: 9;
     box-sizing: border-box;
     position: relative;
     text-overflow: ellipsis;
@@ -168,7 +175,8 @@ body, html {
 }
 
 .board-modal-icon-close {
-    position: absolute;
+    /*position: absolute;*/
+    flex: 1;
     color: #17394D;
     margin: 8px;
     top: 0;
