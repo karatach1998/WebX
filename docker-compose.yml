@@ -1,0 +1,43 @@
+version: "3.1"
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: webx_mongo
+    restart: always
+    networks:
+      - webx
+    expose:
+      - 27017
+    volumes:
+      - /tmp/webx.mongodb:/data/db
+    command: mongod --smallfiles --logpath=/dev/null
+
+  nginx:
+    image: nginx
+    container_name: webx_nginx
+    depends_on:
+      - node
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "80:80"
+    networks:
+      - webx
+    command: /bin/bash -c "exec nginx -g 'daemon off;'"
+
+  node:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: webx_node
+    depends_on:
+      - mongodb
+    volumes:
+      - .:/usr/src/WebX
+    networks:
+      - webx
+
+networks:
+  webx:
+    driver: bridge
