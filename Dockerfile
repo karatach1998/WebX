@@ -6,9 +6,12 @@ WORKDIR /usr/src/WebX
 RUN npm install -g nodemon
 
 COPY package.json /usr/src/WebX/
-RUN npm install
+#RUN npm install
 
 COPY . /usr/src/WebX
+#RUN ["npm", "build"]
+#RUN chmod +x -R ./node_modules/.bin
+#RUN chmod +x ./node_modules/nrun/bin/nrun.js
 
 EXPOSE 3000
-CMD ["nodemon", "app.js"]
+CMD npm run watch

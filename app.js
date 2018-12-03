@@ -96,7 +96,7 @@ let users = require('./routes/users');
 app.use('/users', users);
 
 app.get('/', (req, res) => {
-    res.sendFile('main_sample.html', {root: __dirname + '/static'});
+    res.sendFile(path.join(__dirname, 'static/index.html'));
 });
 
 app.listen(PORT, () => console.log(`Server app listening on port ${PORT}!`));
