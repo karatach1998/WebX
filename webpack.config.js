@@ -9,6 +9,7 @@ module.exports = {
     },
     devServer: {
         historyApiFallback: true,
+        contentBase: ['components/', 'static/js/']
     },
     module: {
         loaders: [
@@ -20,7 +21,7 @@ module.exports = {
                     presets: ['@babel/preset-env', '@babel/preset-react'],
                     // presets: ['@babel/'],
                     plugins: [
-                        // 'transform-class-properties',
+                        'transform-class-properties',
                         // 'transform-object-rest-spread'
                     ]
                 }
