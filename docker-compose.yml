@@ -9,8 +9,10 @@ services:
       - webx
     expose:
       - 27017
+    ports:
+      - 27017:27017
     volumes:
-      - /tmp/webx.mongodb:/data/db
+      - /var/tmp/webx.mongodb:/data/db
     command: mongod --smallfiles --logpath=/dev/null
 
   nginx:
