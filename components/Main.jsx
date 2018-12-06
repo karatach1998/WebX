@@ -1,11 +1,13 @@
 const React = require('react');
-const { Component } = React;
 const axios = require('axios');
 
-class Main extends Component {
+const Header = require('./Header');
+const Boards = require('./Boards');
+
+class Main extends React.Component {
     state = {
         isSubmitting: false,
-        board: null
+        boards: null
     };
 
     componentDidMount() {
@@ -13,20 +15,21 @@ class Main extends Component {
 
         axios.get('/api/boards').then(({data}) => {
             this.setState({
-                board: data,
+                boards: data,
                 isSubmitting: false
             });
         });
     }
 
     render() {
-        if (this.state.isSubmitting || !this.state.board) {
+        if (this.state.isSubmitting || !this.state.boards) {
             return <div>Preloader</div>
         }
 
         return (
             <div>
-                <p>Hello!!! Done</p>
+                <Header bgColor="#237FC2" userInitials="CK"/>
+                <Boards groups={this.state.boards}/>
             </div>
         );
     }
