@@ -1,10 +1,12 @@
 const React = require('react');
-const { Route } = require('react-router');
+const { IndexRoute, Route, Switch } = require('react-router');
 
-const Main = require('../../components/main');
+const Main = require('../../components/Main');
+const Board = require('../../components/Board');
 
-const Routes = module.exports = () => (
-    <div>
-        <Route path="/" component={Main}/>
-    </div>
+const routes = module.exports = (
+    <Switch>
+        <Route exact path="/" component={App} />
+        <Route exact path="/boards/:boardId" component={Board} />
+    </Switch>
 );

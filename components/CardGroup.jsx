@@ -16,12 +16,10 @@ class CardGroup extends React.Component {
         return (
             <div className="boards-group">
                 <p className="boards-group-title"><span className={group2class[this.props.groupTitle]}></span> {this.props.groupTitle}</p>
-                <React.Fragment>
-                    {_(this.props.groupBoards).map(({_id, title, bgUrl}) => (
-                        <Card key={`card2board${_id}`}
-                              boardId={_id} boardTitle={title} boardBgUrl={bgUrl} />
-                    ))}
-                </React.Fragment>
+                {_(this.props.groupBoards).map(({_id, title, bgUrl}) => (
+                    <Card key={`card2board${_id}`}
+                          boardId={_id} boardTitle={title} boardBgUrl={bgUrl} />
+                ))}
             </div>
         );
     }

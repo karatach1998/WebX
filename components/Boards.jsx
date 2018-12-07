@@ -1,22 +1,12 @@
 const React = require('react');
-const _ = require('underscore');
 const {Route} = require('react-router');
-const Board = require('./Board');
+const _ = require('underscore');
 
 const CardGroup = require('./CardGroup');
 
 class Boards extends React.Component {
-    state = {
-        boardId: ""
-    }
-
-    handleClick = (boardId) => {
-        this.setState({boardId: boardId});
-    }
-
-
     render() {
-        const {boardId} = this.state;
+        console.log('222222');
 
         return (
             <div style={{ margin: "50px" }}>

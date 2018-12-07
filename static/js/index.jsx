@@ -2,13 +2,13 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 import { BrowserRouter as Router } from "react-router-dom";
 
-const Routes = require('./routes');
+const routes = require('./routes');
 
 console.log('LOG: index.jsx');
 
 ReactDOM.render(
     <Router>
-        <Routes />
+        {routes}
     </Router>,
     document.getElementById('root')
 );
