@@ -3,6 +3,7 @@ RUN mkdir -p /usr/src/WebX
 
 WORKDIR /usr/src/WebX
 
+RUN ls -la
 RUN npm install -g nodemon
 
 COPY package.json /usr/src/WebX/
