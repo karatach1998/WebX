@@ -27,9 +27,7 @@ services:
     command: /bin/bash -c "exec nginx -g 'daemon off;'"
 
   node:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ${TC_NODEJS_IMAGE_TAG}
     container_name: webx_node
     depends_on:
       - mongodb
