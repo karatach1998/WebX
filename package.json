@@ -4,8 +4,8 @@
   "dependencies": {
     "express": "^4.16.4",
     "express-session": "^1.15.6",
-    "mongodb": "^3.1.8",
     "mongoose": "^5.3.9",
+    "mongoose-timestamp": "^0.6.0",
     "react": "^16.6.0",
     "react-dom": "^16.6.3",
     "react-router": "^4.3.1",
