@@ -18,11 +18,22 @@ module.exports = {
                 exclude: /node_modules/,
                 loader: 'babel-loader',
                 query: {
-                    presets: ['@babel/preset-env', '@babel/preset-react'],
+                    presets: [
+                        '@babel/preset-react',
+                        [
+                            '@babel/preset-env',
+                            {
+                                "targets": "> 0.25%, not dead",
+                                "modules": "commonjs"
+                            }
+                        ],
+                    ],
                     // presets: ['@babel/'],
                     plugins: [
                         'transform-class-properties',
-                        // 'transform-object-rest-spread'
+                        // 'transform-object-rest-spread',
+                        'transform-strict-mode',
+                        "@babel/plugin-transform-runtime"
                     ]
                 }
             }
