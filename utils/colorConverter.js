@@ -9,6 +9,10 @@ exports.hexToRgb = function(hex) {
     } : null;
 }
 
+exports.rgbToHex = function(rgb) {
+    return '#' + _(rgb).values().map(ch => ch.toString(16)).join('');
+}
+
 exports.rgbToHsl = function(c) {
     const r = c.r / 255;
     const g = c.g / 255;
