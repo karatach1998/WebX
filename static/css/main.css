@@ -62,7 +62,7 @@ body, html {
 }
 
 .main-board-group {
-    height: 200px;
+    height: 150px;
 }
 
 .main-board-group-title {
@@ -91,15 +91,15 @@ body, html {
 
 .main-board-tile-bg {
     position: absolute;
-    width: 200px;
+    width: 100%;
     border-radius: 5px;
 }
 
 .main-board-tile-title {
+    position: absolute;
     margin: 20px 10px;
     color: white;
     font-weight: bold;
-    position: absolute;
     z-index: 1;
     background: black;
     border-radius: 2px;

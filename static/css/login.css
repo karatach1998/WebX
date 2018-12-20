@@ -1,3 +1,5 @@
+@import './global.css';
+
 @import url('https://fonts.googleapis.com/css?family=Poppins');
 
 input {
@@ -5,11 +7,7 @@ input {
     border: none;
 }
 
-body {
-    margin: 0;
-}
-
-.container-login-parent {
+.login-container-parent {
     min-height: 100vh;
     display: flex;
     flex-wrap: wrap;
@@ -17,7 +15,7 @@ body {
     padding: 15px;
 }
 
-.container-login-child {
+.login-container-child {
     display: inline-block;
     align-content: center;
     position: relative;
@@ -25,11 +23,11 @@ body {
     padding: 15px;
 }
 
-.form-login {
+.login-form {
     background-color: #FFFFFF;
 }
 
-.text-login {
+.login-text {
     margin: 10px;
     width: 100%;
     text-align: center;
@@ -37,20 +35,20 @@ body {
     font-size: 20px;
 }
 
-.text-label {
+.login-text-label {
     margin: 5px 0;
     font-family: 'Poppins', sans-serif;
     font-size: 14px;
 }
 
-.input-container {
+.login-input-container {
     position: relative;
     display: block;
     overflow: hidden;
     margin: 8px 0;
 }
 
-.input-field {
+.login-input-field {
     overflow: hidden;
     font-family: Poppins-Medium, sans-serif;
     font-size: 16px;
@@ -62,7 +60,7 @@ body {
     padding: 10px 5px;
 }
 
-.underline-animation {
+.login-underline-animation {
     transition: all 0.5s;
     display: block;
     bottom: 0;
@@ -77,7 +75,7 @@ body {
     left: 0;
 }
 
-.btn {
+.login-btn {
     position: relative;
     font-family: Poppins-Medium, sans-serif;
     font-size: 18px;
@@ -90,7 +88,7 @@ body {
     outline: none;
 }
 
-.btn:before {
+.login-btn:before {
     content: "";
     position: absolute;
     bottom: 0;
@@ -101,23 +99,23 @@ body {
     transition: top 0.09s ease-in, color 0.09s ease-in;
 }
 
-.btn:hover:before {
+.login-btn:hover:before {
     top: 0;
 }
 
-.btn-login {
+.login-btn-login {
     color: #383736;
 }
 
-.btn-login:hover {
+.login-btn-login:hover {
     color: whitesmoke;
 }
 
-.btn-login:before {
+.login-btn-login:before {
     background: #61bd4f;
 }
 
-.btn-login-with-google {
+.login-btn-login-with-google {
     display: inline-block;
     position: relative;
     border: thin solid #4285F4;
@@ -127,15 +125,15 @@ body {
     padding: 5px 10px;
 }
 
-.btn-login-with-google:hover {
+.login-btn-login-with-google:hover {
     color: whitesmoke;
 }
 
-.btn-login-with-google:before {
+.login-btn-login-with-google:before {
     background: #4285F4;
 }
 
-.btn-login-with-google-icon {
+.login-btn-login-with-google-icon {
     background: url('../images/icons/icon-google.svg') transparent 5px 50% no-repeat;
     background-size: 34px 34px;
     display: inline-block;
@@ -144,31 +142,31 @@ body {
     height: 42px;
 }
 
-.btn-login-with-google-text {
+.login-btn-login-with-google-text {
     display: inline-block;
     vertical-align: middle;
     padding-left: 21px;
     padding-right: 42px;
 }
 
-.btn-register {;
+.login-btn-register {;
     border: thin solid #db3236;
     color: #383736;
 }
 
-.btn-register:hover {
+.login-btn-register:hover {
     color: whitesmoke;
 }
 
-.btn-register:before {
+.login-btn-register:before {
     background: #db3236;
 }
 
-.container-link {
+.login-container-link {
     margin: 15px;
 }
 
-.link {
+.login-link {
     display: block;
     font-family: 'Poppins', sans-serif;
     font-size: 14px;
