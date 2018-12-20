@@ -1,0 +1,99 @@
+@import "global.css";
+
+@import url('https://fonts.googleapis.com/css?family=Kalam');
+@import url('https://fonts.googleapis.com/css?family=Mr+Dafoe');
+
+.header {
+    height: 32px;
+    position: relative;
+    background: #026aa7;
+    overflow: hidden;
+    padding: 4px;
+    z-index: 10;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.header-logo {
+    position: absolute;
+    text-align: center;
+    text-decoration: none;
+    z-index: 2;
+    left: 50%;
+    margin-left: -40px;
+    display: block;
+    height: 30px;
+    vertical-align: center;
+}
+
+.header-logo-text {
+    vertical-align: bottom;
+    font-size: 20px;
+    color: whitesmoke;
+    opacity: .5;
+}
+
+.header-logo-title {
+    display: inline-block;
+    font-size: 24px;
+    font-family: 'Kalam', cursive;
+    font-weight: 600;
+    line-height: 24px;
+    margin: -8px;
+}
+
+.header-btn-wrapper {
+    display: block;
+    margin-right: 4px;
+    height: 0;
+    text-align: center;
+}
+
+.header-r-btn-wrapper {
+    margin-left: 4px;
+    height: 100%
+}
+
+.header-right-aligner {
+    margin-left: auto;
+    margin-right: 10px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.header-btn {
+    min-width: 32px;
+    height: 32px;
+    border-radius: 2px;
+    border: 0 none;
+    padding: 5px 10px;
+    outline: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: whitesmoke;
+    background: #288DC7;
+}
+
+.header-btn:hover {
+    background: #237FC2;
+}
+
+.header-btn:active {
+    background: #1E7BBE;
+}
+
+.header-btn-icon {
+    min-width: 32px;
+    height: 32px;
+}
+
+.header-btn-text {
+    padding: 0 8px;
+}
+
+.header-btn-avatar {
+    width: 32px;
+    border-radius: 16px;
+    /*background: linear-gradient(to bottom, @green-500 0%, green-600 100%);*/
+    align-items: center;
+}

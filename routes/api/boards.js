@@ -3,6 +3,7 @@ const router = express.Router();
 const _ = require('underscore');
 
 const Board = require('../../models/board');
+const Task = require('../../models/task');
 
 module.exports = (app) => {
     const imageRepo = require('../helpers/imageRepo')(app);
@@ -11,7 +12,7 @@ module.exports = (app) => {
         console.log('INCOMING REQUEST!!!!');
         console.log('++++++++++++++++++++++');
         console.log(req.body);
-        const requestedFields = ['_id', 'title', 'bgUrl', 'stared'].join(' ');
+        const requestedFields = _(['_id', 'title', 'bgUrl', 'stared']).join(' ');
 
         // Get stared boards
         const stared = await Board.find({ stared: true }, requestedFields);
@@ -64,6 +65,14 @@ module.exports = (app) => {
             console.log(board);
             res.status(200).json(board);
         });
+    });
+
+    router.post('/:boardId', async (req, res) => {
+        const { boardId } = req.params;
+        const {taskTitle, columnIndex} = req.body;
+
+        const {_id: taskId, title} = await Task({title: taskTitle, boardId, columnIndex}).save().catch(x => console.log(x));
+        res.status(200).json({taskId, title});
     });
 
     router.put('/:boardId', (req, res) => {

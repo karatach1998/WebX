@@ -1,0 +1,58 @@
+@import './global.css';
+
+.boards-tile-wrapper {
+    position: relative;
+    width: 200px;
+    height: 150px;
+}
+
+.boards-tile {
+    width: 100%;
+    position: absolute;
+    border-radius: 5px;
+    margin-left: 10px;
+    top: 0;
+    box-shadow: 2px 2px 4px lightgray;
+    transition: top 300ms, box-shadow 300ms;
+}
+
+.boards-tile:hover {
+    top: -2px;
+    box-shadow: 5px 10px 10px gray;
+}
+
+.boards-tile-bg {
+    position: absolute;
+    width: 100%;
+    height: 110px;
+    border-radius: 5px;
+}
+
+.boards-tile-title {
+    position: absolute;
+    margin: 20px 10px;
+    color: white;
+    font-family: Helvetica Neue,Arial,Helvetica,sans-serif;
+    font-weight: bold;
+    z-index: 1;
+    background: black;
+    border-radius: 2px;
+    padding: 4px 8px;
+}
+
+.boards-group {
+    height: 100%;
+}
+
+.boards-group-title {
+    font-family: Helvetica Neue,Arial,Helvetica,sans-serif;
+    font-weight: bold;
+}
+
+.boards-group-text {
+    position: relative;
+    font-family: Helvetica Neue,Arial,Helvetica,sans-serif;
+    font-size: 14px;
+    font-style: italic;
+    margin-left: 10px;
+}
