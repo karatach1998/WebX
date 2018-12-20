@@ -7,6 +7,7 @@ const expressValidator = require('express-validator');
 const session = require('express-session');
 const passport = require('passport');
 
+const User = require('./models/user');
 
 mongoose.connect('mongodb://webx_mongo:27017/webx', {
     useNewUrlParser: true,
@@ -28,16 +29,15 @@ const PORT = 3000;
 
 app.use(morgan('combined'));
 
-app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, '/static')));
 
 app.use(session({
     secret: 'webx',
-    resave: false,
-    saveUninitialized: false,
-    cookie: { msg: 'hello' }
+    resave: true,
+    saveUninitialized: false
 }));
 
 app.use(require('connect-flash')());
@@ -60,8 +60,6 @@ app.use(expressValidator({
     }
 }));
 
-require('./models/user');
-
 // app.get('/', (req, res) => {
 //     const auth = new AuthService();
 // });
@@ -78,25 +76,29 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 function ensureAuthenticated(req, res, next) {
-    return next(); // TODO: Debug only purposes fix.
-    if (req.isAuthenticated() || req.url.startsWith('/users')) {
-        // req.user is available for use here
-        return next();
+    // return next(); // TODO: Debug only purposes fix.
+    console.log(req.url);
+    if (/^.*\/login/.test(req.url)) {
+        console.log('startsWich');
+        next();
     }
+    User.findOne({ sessionId: req.session.sessionId }, (err, user) => {
+        return next();
+    });
 
+    console.log('redirect :login');
     // redirect otherwise
-    res.redirect('/users/login');
+    res.redirect('/login');
 }
 
-app.get('*', ensureAuthenticated, (req, res, next) => {
-    res.locals.user = req.user || null;
-    next();
-});
+// app.get('*', ensureAuthenticated, (req, res, next) => {
+//     // res.locals.user = req.user || null;
+//     next();
+// });
 
-let users = require('./routes/users');
-let api = require('./routes/api');
-app.use('/users', users);
-app.use('/api', api);
+// app.use(ensureAuthenticated);
+
+require('./routes')(app);
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'static/index.html'));
