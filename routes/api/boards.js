@@ -41,15 +41,8 @@ module.exports = (app) => {
         console.log('77777777777777777777777777777');
         console.log(title);
 
-        Board.create({ title, bgUrl: await imageRepo.getRandomPhotoUrl() }).then((err, board) => {
-            if (err) {
-                console.log(err);
-                res.status(401).end();
-                return;
-            }
-
-            console.log(board);
-            res.status(200).end();
+        Board.create({ title, bgUrl: await imageRepo.getRandomPhotoUrl() }).then(({_id: boardId}) => {
+            res.status(200).json({boardId});
         });
     });
 

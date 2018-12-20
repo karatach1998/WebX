@@ -1,7 +1,9 @@
 const React = require('react');
-const { Link } = require('react-router-dom');
+const { withRouter, Link } = require('react-router-dom');
 const Modal = require('react-modal');
 const styled = require('styled-components').default;
+const axios = require('axios');
+
 const { hexToRgb, rgbToHsl } = require('../utils/colorConverter');
 
 const SubstrateLayer = styled.div`
@@ -61,49 +63,41 @@ const AvatarButton = styled(Button)`
     }
 `;
 
-const modalStyle = {
-    content : {
-        top                   : '50%',
-        left                  : '50%',
-        right                 : 'auto',
-        bottom                : 'auto',
-        marginRight           : '-50%',
-        transform             : 'translate(-50%, -50%)',
-    },
-    overlay: {
-        zIndex                : 10
-    }
-};
-
 Modal.setAppElement('#root');
 
 class Header extends React.Component {
-    constructor(props) {
-        super(props);
+    state = {
+        newBoard: null
+    }
 
-        this.state = {
-            showCreateModal: false,
-            createModalInputValue: ''
+    handleNewBoardModalOpen = () => {
+        console.log('handleNewBoardModalOpen');
+        this.setState({newBoard: {title: ''}});
+    }
+
+    handleNewBoardModalClose = () => {
+        // const title = this.state.newBoard;
+        // console.log(title);
+        // this.props.onCreateBoard(title);
+        this.setState({newBoard: null});
+    }
+
+    handleNewBoardTitleChange = (e) => {
+        this.setState({newBoard: {title: e.target.value}});
+    }
+
+    handleNewBoardSubmit = (e) => {
+        const {title} = this.state.newBoard;
+
+        this.handleNewBoardModalClose();
+        if (title === '') {
+            return;
         }
+        axios.post(`/api/boards`, {title}).then(({status, data: {boardId}}) => {
+            if (status !== 200) return;
 
-        this.handleOpenCreateModal = this.handleOpenCreateModal.bind(this);
-        this.handleCloseCreateModal = this.handleCloseCreateModal.bind(this);
-        this.handleCreateModalInputChange = this.handleCreateModalInputChange.bind(this);
-    }
-
-    handleCreateModalInputChange(e) {
-        this.state.createModalInputValue = e.target.value;
-    }
-
-    handleOpenCreateModal() {
-        this.setState({ showCreateModal: true });
-    }
-
-    handleCloseCreateModal(e) {
-        this.setState({ showCreateModal: false });
-        const title = this.state.createModalInputValue;
-        console.log(title);
-        this.props.onCreateBoard(title);
+            this.props.history.push(`/boards/${boardId}`);
+        });
     }
 
     render() {
@@ -122,23 +116,41 @@ class Header extends React.Component {
                 </div>
                 <div className="header-right-aligner">
                     <div className="header-r-btn-wrapper">
-                        <Button to="/" bgcolor={this.props.bgcolor} onClick={this.handleOpenCreateModal}>
+                        <Button to="/" bgcolor={this.props.bgcolor} onClick={this.handleNewBoardModalOpen}>
                             <span className="fas fa-plus header-btn-icon"></span>
                         </Button>
                     </div>
                     <div className="header-r-btn-wrapper">
-                        <AvatarButton to="/" bgcolor={this.props.bgcolor}>{this.props.userInitials}</AvatarButton>
+                        <AvatarButton to="/" bgcolor={this.props.bgcolor}>{this.props.userinitials}</AvatarButton>
                     </div>
                 </div>
                 {/* MODALS */}
                 {/*<Modal isOpen={this.state.showModal} style={modalStyles} contentLabel="Modal">*/}
                     {/*<Link to={`/`} onClick={() => axios('/api/users/logout')}>Logout</Link>*/}
                 {/*</Modal>*/}
-                <Modal isOpen={this.state.showCreateModal} style={modalStyle} contentLabel="Create new board">
-                    <form onSubmit={this.handleCloseCreateModal}>
-                        <input type="text" name="create-board-input" value={this.state.createModalInputValue}
-                               onChange={this.handleCreateModalInputChange}/>
-                        <button type="submit">Create</button>
+                <Modal isOpen={!!this.state.newBoard}
+                       onRequestClose={this.handleNewBoardModalClose}
+                       shouldCloseOnOverlayClick={true}
+                       style={{
+                           overlay: {
+                               // backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                               backgroundColor: 'transparent',
+                               zIndex: 100
+                           },
+                           content: {
+                               top: '25%',
+                               left: '50%',
+                               right: 'auto',
+                               bottom: 'auto',
+                               transform: 'translate(-50%, -50%)',
+                           }
+                       }}>
+                    <form onSubmit={this.handleNewBoardSubmit} id={'newBoardForm'}>
+                        <h3 style={{}}>Create new board</h3>
+                        <input style={{}} form={'newBoardForm'}
+                               value={this.state.newBoard ? this.state.newBoard.title : ''}
+                               placeholder="Enter new board title ..." autoFocus={true}
+                               onChange={this.handleNewBoardTitleChange}/>
                     </form>
                 </Modal>
             </SubstrateLayer>
@@ -146,4 +158,4 @@ class Header extends React.Component {
     }
 }
 
-module.exports = Header;
+module.exports = withRouter(Header);

@@ -19,22 +19,29 @@ BoardSchema.plugin(timestamp, {
     updatedAt: 'lastRequestTime'
 });
 
-async function recomputeColor(next) {
-    console.log('recomputeColor');
-    const {bgUrl} = this.getUpdate();
-    if (bgUrl) {
-        const [r, g, b] = await getAverageColor(bgUrl);
-        this.bgColor = {r, g, b};
-        console.log(this.bgColor);
-        this.bgColor = rgbToHex(this.bgColor);
-        console.log('color');
-        console.log(this.bgColor);
-        this.setUpdate({bgUrl, bgColor: this.bgColor});
-    }
-    next();
+async function recomputeColor(bgUrl) {
+    const [r, g, b] = await getAverageColor(bgUrl);
+    const res = rgbToHex({r, g, b});
+
+    console.log('color');
+    console.log({r, g, b});
+    console.log(res);
+
+    return res;
 }
 
-BoardSchema.pre('save', recomputeColor);
-BoardSchema.pre('updateOne', recomputeColor);
+BoardSchema.pre('save', async function(next) {
+    const {bgUrl} = this;
+
+    if (bgUrl) this.bgColor = await recomputeColor(bgUrl);
+    next();
+});
+
+BoardSchema.pre(/^update/, async function(next) {
+    const {bgUrl} = this.getUpdate();
+
+    if (bgUrl) this.setUpdate({bgColor: await recomputeColor(bgUrl)});
+    next();
+});
 
 module.exports = mongoose.model('Boards', BoardSchema);
