@@ -5,7 +5,8 @@ const Card = require('./Card');
 
 const group2class = {
     Stared: 'fas fa-star',
-    Recent: 'fas fa-clock'
+    Recent: 'fas fa-clock',
+    Other: 'fas fa-user'
 }
 
 
@@ -16,10 +17,15 @@ class CardGroup extends React.Component {
         return (
             <div className="boards-group">
                 <p className="boards-group-title"><span className={group2class[this.props.groupTitle]}></span> {this.props.groupTitle}</p>
-                {_(this.props.groupBoards).map(({_id, title, bgUrl}) => (
-                    <Card key={`card2board${_id}`}
-                          boardId={_id} boardTitle={title} boardBgUrl={bgUrl} />
-                ))}
+                <div style={{display: 'flex'}}>
+                {this.props.groupBoards.length !== 0
+                    ? (_(this.props.groupBoards).map(({_id, title, bgUrl}) => (
+                        <Card key={`card2board${_id}`}
+                            boardId={_id} boardTitle={title} boardBgUrl={bgUrl} />
+                      )))
+                    : <p className="boards-group-text">List is empty</p>
+                }
+                </div>
             </div>
         );
     }
