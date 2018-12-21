@@ -116,7 +116,7 @@ class Header extends React.Component {
                 </div>
                 <div className="header-right-aligner">
                     <div className="header-r-btn-wrapper">
-                        <Button to="/" bgcolor={this.props.bgcolor} onClick={this.handleNewBoardModalOpen}>
+                        <Button to="#" bgcolor={this.props.bgcolor} onClick={this.handleNewBoardModalOpen}>
                             <span className="fas fa-plus header-btn-icon"></span>
                         </Button>
                     </div>
