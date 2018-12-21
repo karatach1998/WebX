@@ -162,7 +162,7 @@ class Board extends React.Component {
 
         return (
             <BackgroundLayer bgUrl={this.state.data.bgUrl}>
-                <Header bgcolor={this.state.data.bgColor} />
+                <Header bgcolor={this.state.data.bgColor} userinitials={'СК'}/>
                 <div>
                     <BoardHeader {..._(this.state.data).pick(['title', 'stared', 'bgColor'])} onSubmit={this.handleBoardSubmit} />
                     <div className="container">
@@ -177,18 +177,15 @@ class Board extends React.Component {
                                 <div className="board-column">
                                     <div className="board-column-title-wrapper">
                                         <form onSubmit={this.handleNewColumnSubmit}
-                                              onReset={this.handleNewColumnReset} >
-                                            {/*<div>*/}
-                                                <input type="text" className="board-input board-input-title" placeholder="Enter new column title"
-                                                       value={this.state.newColumn.title} autoFocus={this}
-                                                       onChange={this.handleNewColumnChange} onBlur={e => {e.preventDefault()}}/>
-                                            {/*</div>*/}
+                                              onReset={this.handleNewColumnReset}
+                                              onBlur={this.handleNewColumnReset} >
+                                            <input type="text" className="board-input board-input-title"
+                                                   value={this.state.newColumn.title} placeholder="Enter new column title" autoFocus={true}
+                                                   onChange={this.handleNewColumnChange} />
                                             <br/>
                                             <br/>
                                             <button type="submit" className="board-btn board-btn-add-column-submit">Add column</button>
-                                            <button type="reset" className="board-btn board-add-column-cancel">
-                                                <span className="fas fa-times"></span>
-                                            </button>
+                                            <button type="reset" className="board-btn board-add-column-cancel"><i className="fas fa-times"></i></button>
                                         </form>
                                     </div>
                                 </div>
