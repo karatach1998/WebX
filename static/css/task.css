@@ -11,16 +11,16 @@
 }
 
 .task-input {
+    -moz-appearance:none;
     min-height: 28px;
-    /*padding: 0 8px 0 6px;*/
-    background-color: transparent;
+    padding: 0 8px 0 6px;
     border-radius: 5px;
     border: 2px solid transparent;
     color: #17394d;
     font-family: Helvetica Neue, Arial, Helvetica, sans-serif;
     font-size: 14px;
-    font-weight: bold;
-    line-height: 20px;
+    font-weight: normal;
+    line-height: 24px;
     display: block;
 }
 
@@ -31,19 +31,21 @@
 }
 
 .task-input-title {
+    background-color: transparent;
+    font-size: 18px;
     font-weight: bold;
 }
 
 .task-input-desc {
-    padding: 0;
     height: 150px;
     display: flex;
     flex-basis: 100%;
-    background-color: rgba(9,45,66,.08);
+    resize: none;
+    background-color: rgba(9,45,66,.08) !important;
 }
 
 .task-input-desc:focus {
-    background: white;
+    background-color: white;
     color: black;
 }
 
@@ -93,8 +95,9 @@
     height: 32px;
     margin-bottom: 10px;
     max-width: 300px;
-    padding: 6px 12px;
+    padding: 6px 24px;
     color: #17394d;
+    text-align: left;
 }
 
 .task-btn-link:hover {
