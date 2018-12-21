@@ -5,6 +5,7 @@ const styled = require('styled-components').default;
 const axios = require('axios');
 
 const { hexToRgb, rgbToHsl } = require('../utils/colorConverter');
+const Auth = require('../static/js/utils/Auth');
 
 const SubstrateLayer = styled.div`
     background: ${props => {let {h, s, l} = rgbToHsl(hexToRgb(props.bgcolor)); return `hsla(${h}, ${s}%, ${l * 0.4}%, 0.7)`;}};
@@ -121,7 +122,7 @@ class Header extends React.Component {
                         </Button>
                     </div>
                     <div className="header-r-btn-wrapper">
-                        <AvatarButton to="/" bgcolor={this.props.bgcolor}>{this.props.userinitials}</AvatarButton>
+                        <AvatarButton to="/" bgcolor={this.props.bgcolor} onClick={() => Auth.deauthenticate()}>{this.props.userinitials}</AvatarButton>
                     </div>
                 </div>
                 {/* MODALS */}

@@ -71,7 +71,7 @@ input {
     background-color: black;
 }
 
-.input-field:focus + .underline-animation {
+.login-input-field:focus + .login-underline-animation {
     left: 0;
 }
 
