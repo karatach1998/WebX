@@ -63,38 +63,45 @@ const Button = styled.button`
 `;
 
 class BoardHeader extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            data: _(this.props).pick(['title', 'stared', 'bgColor']),
-        }
+    state = {
+        newTitle: null
     }
 
     handleTitleChange = (e) => {
-        const {data} = this.state;
-        this.setState({data: {...data, title: e.target.value}});
+        this.setState({newTitle: e.target.value});
+    }
+
+    handleTitleKeyPress = (e) => {
+        if (e.key === "Enter" && e.shiftKey === false) {
+            this.handleTitleSubmit(e);
+        }
     }
 
     handleTitleSubmit = (e) => {
-        e.preventDefault(); // To prevent redirect.
-        this.props.onSubmit(_(this.state.data).pick(['title']));
+        // e.preventDefault(); // To prevent redirect.
+        const {newTitle} = this.state;
+        console.log(newTitle);
+
+        e.target.blur();
+        this.setState({newTitle: null});
+        this.props.onTitleSubmit(newTitle);
     }
 
-    handleStaredSwitch = () => {
-        this.state.data.stared = !this.state.data.stared;
-        this.props.onSubmit(_(this.state.data).pick(['stared']));
-        this.forceUpdate();
+    handleStaredSwitch = (e) => {
+        const newState = !this.props.stared;
+        this.props.onStaredSwitch(newState);
     }
 
     render() {
         return (
-            <SubstrateLayer bgColor={this.state.data.bgColor}>
-                <form onSubmit={this.handleTitleSubmit}>
-                    <TitleInput type="text" value={this.state.data.title} onChange={this.handleTitleChange} />
-                </form>
+            <SubstrateLayer bgColor={this.props.bgColor}>
+                <div onSubmit={this.handleTitleSubmit}>
+                    <TitleInput type="text" value={this.state.newTitle || this.props.title}
+                                onChange={this.handleTitleChange}
+                                onBlur={this.handleTitleSubmit} onKeyPress={this.handleTitleKeyPress} />
+                </div>
                 <Button onClick={this.handleStaredSwitch}>
-                    {this.state.data.stared
+                    {this.props.stared
                         ? <span className="fas fa-star" style={{color: "#f2d600"}}></span>
                         : <span className="far fa-star" style={{color: "#f2d600"}}></span>}
                 </Button>

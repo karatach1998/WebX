@@ -47,23 +47,14 @@ class Board extends React.Component {
     // TODO(sergey): Move handleCreateBoard implementation to Header class.
     // We need to pass enough information to this class instance to allow it perform the handling.
 
-    submitBoardChange = (updatedData) => {
-        console.log(updatedData);
+    handleBoardHeaderSubmit = (updatedData) => {
+        let {data} = this.state;
+
         axios.put(`/api/boards/${this.state.data._id}`, updatedData).then(({status}) => {
-            console.log(`SUBMIT CODE: ${status}`)
-        });
-        // NOTE(sergey): Try not to do entire board data fetch.
-        // Update component specific state update instead.
+            if (status !== 200) return;
 
-        // await axios.get(`/api/boards/${this.state.data._id}`).then(({status, data}) => {
-        //     if (status === 200) {
-        //         this.setState({data});
-        //     }
-        // });
-    }
-
-    handleBoardSubmit = (updatedData) => {
-        this.submitBoardChange(updatedData);
+            this.setState({data: _(data).extend(updatedData)});
+        })
     }
 
     handleColumnTitleSubmit = async (title, index) => {
@@ -198,7 +189,9 @@ class Board extends React.Component {
             <BackgroundLayer bgUrl={this.state.data.bgUrl}>
                 <Header bgcolor={this.state.data.bgColor} userinitials={'СК'}/>
                 <div>
-                    <BoardHeader {..._(this.state.data).pick(['title', 'stared', 'bgColor'])} onSubmit={this.handleBoardSubmit} />
+                    <BoardHeader {..._(this.state.data).pick(['title', 'stared', 'bgColor'])}
+                                 onTitleSubmit={title => this.handleBoardHeaderSubmit({title})}
+                                 onStaredSwitch={stared => this.handleBoardHeaderSubmit({stared})} />
                     <div className="container">
                         <div className="row">
                             {_(this.state.data.columns).map((column, i) => (
