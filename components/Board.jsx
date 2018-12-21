@@ -128,6 +128,22 @@ class Board extends React.Component {
         })
     }
 
+    handleColumnDelete = async (columnIndex) => {
+        let {data} = this.state;
+        let {columns} = data;
+
+        console.log(columns);
+        console.log(columnIndex);
+        columns.splice(columnIndex, 1);
+        console.log(columns);
+        return await axios.put(`/api/boards/${this.state.data._id}`, {columns}).then(({status}) => {
+            if (status !== 200) return;
+
+            console.log(columns);
+            this.setState({data: {...data, columns}});
+        });
+    }
+
     handleNewColumnCreate = (e) => {
         console.log('create');
         this.setState({newColumn: {title: ''}});
@@ -181,6 +197,7 @@ class Board extends React.Component {
                                 <BoardColumn key={`col-${i}`} index={i} {...column}
                                              onTaskClick={this.handleTaskSelect}
                                              onTitleSubmit={this.handleColumnTitleSubmit}
+                                             onColumnDelete={this.handleColumnDelete}
                                              onTaskAdd={this.handleTaskAdd} />
                             ))}
                             {this.state.newColumn ? (

@@ -125,6 +125,10 @@ class BoardColumn extends React.Component {
                            onSubmit={this.handleTitleSubmit}
                            onKeyPress={this.handleKeyPress}
                            onBlur={this.handleTitleBlur} />
+                    <button className="board-btn board-btn-delete-column"
+                            onClick={this.handleColumnDelete}>
+                        <i className="fas fa-trash-alt"></i>
+                    </button>
                 </div>
                 {_(this.props.tasks).map(({title}, i) => (
                     <div key={`col-${this.state.index}-${i}`} className="board-column-element board-column-element-static"
