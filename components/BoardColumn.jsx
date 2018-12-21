@@ -8,110 +8,82 @@ class BoardColumn extends React.Component {
 
         console.log(props);
         this.state = {
-            data: {title: props.title, tasks: props.tasks || []},
-            index: props.index,
-            newTask: {
-                active: false,
-                form: null,
-                value: null
-            },
-            newTitle: {
-
-            }
+            newTitle: null,
+            newTask: null
         };
     }
 
-    componentDidUpdate() {
-        this.state.data = {title: this.props.title, tasks: this.props.tasks || []};
-    }
-
     handleTitleChange = (e) => {
-        const {data} = this.state;
-        this.setState({data: {...data, title: e.target.value}, newTitle: true});
+        this.setState({newTitle: e.target.value});
     }
 
-    handleKeyPress = (e) => {
+    handleTitleKeyPress = (e) => {
         if (e.key === "Enter" && e.shiftKey === false) {
             console.log(e.key);
-            e.preventDefault();
-            this.refs.title.dispatchEvent(new Event('submit'));
+            // e.preventDefault();
+            // this.refs.title.dispatchEvent(new Event('submit'));
+            this.handleTitleSubmit(e);
         }
     }
 
     handleTitleSubmit = (e) => {
         console.log('handleTitleSubmit');
-        console.log(this.state.data.title);
-        const {data} = this.state;
-        const {title} = data;
-        // const {value: title} = this.state.newTitle;
+        const {newTitle: title} = this.state;
 
-        e.preventDefault();
-        this.setState({newTitle: false});
+        // e.preventDefault();
         e.target.blur();
         console.log('------------');
-        this.props.onTitleSubmit(title, this.state.index).then(_ => {
-            this.setState({data: {...data, title}});
-            console.log(this.state.data);
-        });
+        this.props.onTitleSubmit(title, this.props.index);
     }
 
-    handleTitleBlur = (e) => {
-        console.log('blur');
-        if (this.state.newTitle) {
-            e.target.dispatchEvent(new Event('submit'));
-        }
+    handleTitleReset = (e) => {
+        console.log('handleTitleReset');
+        this.setState({newTitle: null});
     }
 
-    handleElementClick = (e) => {
-        const i = e.i;
-        const {taskId} = this.state.data.tasks[i];
+    handleColumnDelete = (e) => {
+        this.props.onColumnDelete(this.props.index);
+    }
+
+    handleElementClick = (e, index) => {
+        const {taskId} = this.props.tasks[index];
         this.props.onTaskClick(taskId);
     }
 
     handleNewTaskCreate = (e) => {
-        this.setState({newTask: {...this.state.newTask, active: true, value: ''}});
+        this.setState({newTask: ''});
         console.log(this.state);
     }
 
     handleNewTaskReset = (e) => {
         console.log('handleNewTaskReset');
-        this.setState({newTask: {...this.state.newTask, active: false}});
+        this.setState({newTask: null});
     }
 
     handleNewTaskChange = (e) => {
-        const {newTask} = this.state;
-        this.setState({newTask: {...newTask, value: e.target.value}});
+        this.setState({newTask: e.target.value});
     }
 
-    handleNewTaskKeyDown = (e) => {
-        console.log(e.keyCode);
-        if (e.keyCode === 13 && e.shiftKey === false) {
-            e.preventDefault();
-            this.state.newTask.form.dispatchEvent(new Event('submit'));
+    handleNewTaskKeyPress = (e) => {
+        console.log(e.key);
+        if (e.key === "Enter" && e.shiftKey === false) {
+            // e.preventDefault();
+            // this.state.newTask.form.dispatchEvent(new Event('submit'));
+            this.handleNewTaskSubmit(e);
         }
     }
 
     handleNewTaskSubmit = async (e) => {
         console.log('handleNewTaskSubmit');
-        const {value: newTaskTitle} = this.state.newTask;
+        const {newTask: title} = this.state;
 
-        e.preventDefault();
-        this.handleNewTaskReset(e);
+        // e.preventDefault();
+        e.target.blur();
         // NOTE(serge): When calling onTaskAdd, this one have to:
         // 1. Send POST to /api/board router,
         // 2. Board schema pre-hook must update list for specified column and add the record to Task collection.
         // 3. Then it should return json === shortTask item (from column.tasks list).
-        this.props.onTaskAdd(newTaskTitle, this.state.index).then((task) => {
-            console.log('callback');
-            console.log('0000000000000000000000000000000000');
-            console.log(this.state);
-            let {data} = this.state;
-            let {tasks} = data;
-
-            tasks.push(task);
-            console.log({data: {...data, tasks}});
-            this.setState({data: {...data, tasks}});
-        });
+        this.props.onTaskAdd(title, this.props.index);
     }
 
     render() {
@@ -120,36 +92,36 @@ class BoardColumn extends React.Component {
                 <div className="board-column-title-wrapper">
                     <input ref="title"
                            type="text" className="board-input board-input-title"
-                           value={this.state.data.title} placeholder="Enter column title here"
+                           value={this.state.newTitle || this.props.title} placeholder="Enter column title here"
                            onChange={this.handleTitleChange}
                            onSubmit={this.handleTitleSubmit}
-                           onKeyPress={this.handleKeyPress}
-                           onBlur={this.handleTitleBlur} />
+                           onKeyPress={this.handleTitleKeyPress}
+                           onBlur={this.handleTitleReset} />
                     <button className="board-btn board-btn-delete-column"
                             onClick={this.handleColumnDelete}>
                         <i className="fas fa-trash-alt"></i>
                     </button>
                 </div>
                 {_(this.props.tasks).map(({title}, i) => (
-                    <div key={`col-${this.state.index}-${i}`} className="board-column-element board-column-element-static"
-                         onClick={e => {e.i = i; this.handleElementClick(e)}}>
+                    <div key={`col-${this.props.index}-${i}`} className="board-column-element board-column-element-static"
+                         onClick={e => this.handleElementClick(e, i)}>
                         <input className="board-column-element-text" value={title} readOnly={true} />
                     </div>
                 ))}
-                {this.state.newTask.active && (
-                    <div key={`col-${this.state.index}-new`} className="board-column-element">
-                        <form ref={el => this.state.newTask.form = el} onSubmit={this.handleNewTaskSubmit}>
+                {this.state.newTask !== null && (
+                    <div key={`col-${this.props.index}-new`} className="board-column-element">
+                        <div onSubmit={this.handleNewTaskSubmit}>
                             <textarea className="board-input board-input-new-element"
                                       autoFocus={true} placeholder="Enter new task title"
-                                      value={this.state.newTask.value}
+                                      value={this.state.newTask}
                                       onChange={this.handleNewTaskChange}
-                                      onBlur={this.handleNewTaskReset}
-                                      onKeyDown={this.handleNewTaskKeyDown}/>
+                                      onKeyPress={this.handleNewTaskKeyPress}
+                                      onBlur={this.handleNewTaskReset}/>
                             <input type="submit" style={{display: 'none'}} />
-                        </form>
+                        </div>
                     </div>
                 )}
-                <button className="board-btn board-btn-column" onClick={this.handleNewTaskCreate}>
+                <button className="board-btn board-btn-add-element" onClick={this.handleNewTaskCreate}>
                     {'\u002B Добавить еще одну карточку'}
                 </button>
             </div>

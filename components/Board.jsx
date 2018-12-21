@@ -66,21 +66,29 @@ class Board extends React.Component {
         this.submitBoardChange(updatedData);
     }
 
-    handleColumnTitleSubmit = (title, index) => {
+    handleColumnTitleSubmit = async (title, index) => {
         let {data} = this.state;
         let {columns} = data;
 
         columns[index].title = title;
-        return axios.put(`/api/boards/${this.state.data._id}`, {columns});
+        return await axios.put(`/api/boards/${this.state.data._id}`, {columns}).then(({status}) => {
+            if (status !== 200) return;
+
+            this.setState({data: {...data, columns}});
+        });
     }
 
-    handleTaskAdd = (title, index) => {
-        return axios.post(`/api/boards/${this.state.data._id}`, {
-            taskTitle: title,
-            columnIndex: index
-        }).then(({data}) => {
-            console.log(data);
-            return data;
+    handleTaskAdd = (taskTitle, columnIndex) => {
+        return axios.post(`/api/boards/${this.state.data._id}`, {taskTitle, columnIndex})
+                    .then(({status, data: task}) => {
+            if (status !== 200) return;
+
+            let {data} = this.state;
+            let {columns} = data;
+            let {tasks} = columns[columnIndex];
+
+            tasks.push(task);
+            this.setState({data: {...data, columns}});
         });
     }
 
