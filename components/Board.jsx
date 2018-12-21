@@ -88,8 +88,34 @@ class Board extends React.Component {
         this.setState({selectedTaskId: taskId});
     }
 
+    handleTaskLoad = (callback) => {
+        axios.get(`/api/tasks/${this.state.selectedTaskId}`).then(({data}) => callback(data));
+    }
+
     handleTaskModalClose = () => {
         this.setState({selectedTaskId: null});
+    }
+
+    handleTaskDelete = ({_id: taskId, columnIndex}) => {
+        axios.delete(`/api/tasks/${taskId}`).then(({status}) => {
+            if (status !== 200) return;
+
+            let {data: {columns}} = this.state;
+
+            this.handleTaskModalClose();
+            columns[columnIndex] = _.reject(columns[columnIndex], ({taskId: id}) => id === taskId);
+            console.log('forceUpdate');
+            this.forceUpdate();
+        });
+    }
+
+    handleTaskUpdate  = (task) => {
+        const {taskId, title, text} = task;
+        return axios.post(`/api/tasks/${taskId}`, {title, text}).then(({data}) => {
+            const {data: {columns}} = this.state;
+            // columns[columnIndex]
+            // this.setState(data: {...data, columns})
+        })
     }
 
     handleNewColumnCreate = (e) => {
@@ -108,11 +134,24 @@ class Board extends React.Component {
     }
 
     handleNewColumnSubmit = (e) => {
-        console.log('submit');
-        if (this.state.newColumn.title !== '') {
-            console.log(`NEW COLUMN{${this.state.newColumn.title}} SUBMIT!`);
-        }
+        console.log('handleNewColumnSubmit');
+        const {title} = this.state.newColumn;
+
         this.handleNewColumnReset(e);
+        if (title === '') {
+            return
+        }
+
+        let {data} = this.state;
+        let columns = _(data.columns).map(x => x);
+
+        columns.push({title, tasks: []});
+        axios.put(`/api/boards/${this.state.data._id}`, {columns}).then(({status}) => {
+            if (status !== 200) return;
+
+            this.setState({data: {...data, columns}});
+            console.log(columns);
+        });
         e.preventDefault();
     }
 
@@ -182,7 +221,10 @@ class Board extends React.Component {
                                    backgroundColor: 'rgb(235, 238, 240)'
                                }
                            }}>
-                        <Task taskId={this.state.selectedTaskId} onClose={this.handleTaskModalClose} />
+                        <Task onLoad={this.handleTaskLoad}
+                              onClose={this.handleTaskModalClose}
+                              onDelete={this.handleTaskDelete}
+                              onSave={this.handleTaskUpdate}/>
                     </Modal>
                 </div>
             </BackgroundLayer>
