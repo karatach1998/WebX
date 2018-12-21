@@ -21,12 +21,43 @@ router.get('/:taskId', async (req, res) => {
     });
 });
 
-router.put('/:taskId', async (req, res) => {
-    const { taskId } = req.body;
+router.post('/', (req, res) => {
+    let {title, text,  boardId, columnIndex} = req.body;
+
+    if (text === undefined) text = '';
+    Task({title, text,  boardId, columnIndex}).save();
+});
+
+router.put('/:taskId', (req, res) => {
+    const {taskId} = req.params;
+    const task = req.body;
+
+    console.log(task);
+    Task.updateOne({_id: taskId}, task, (err) => {
+        console.log('called');
+        console.log(err);
+        if (err) {
+            res.status(402).end();
+            return;
+        }
+        return res.status(200).end();
+    })
 });
 
 router.delete('/:taskId', async (req, res) => {
+    const {taskId} = req.params;
 
+    console.log('DELETE<1>!!!!!!!!!!!!!!1');
+    await Task.findById(taskId, (err, task) => {
+        console.log('DELETE<2>!!!!!!!!!!!!!!1');
+        if (err) {
+            res.status(401).end();
+            return;
+        }
+
+        task.remove();
+        res.status(200).end();
+    });
 });
 
 module.exports = (app) => {

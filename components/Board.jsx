@@ -67,10 +67,11 @@ class Board extends React.Component {
     }
 
     handleColumnTitleSubmit = (title, index) => {
-        return axios.post(`/api/boards/${this.state.data._id}`, {
-            columnTitle: title,
-            columnIndex: index
-        });
+        let {data} = this.state;
+        let {columns} = data;
+
+        columns[index].title = title;
+        return axios.put(`/api/boards/${this.state.data._id}`, {columns});
     }
 
     handleTaskAdd = (title, index) => {
@@ -78,7 +79,6 @@ class Board extends React.Component {
             taskTitle: title,
             columnIndex: index
         }).then(({data}) => {
-            console.log('dja;');
             console.log(data);
             return data;
         });
@@ -100,21 +100,31 @@ class Board extends React.Component {
         axios.delete(`/api/tasks/${taskId}`).then(({status}) => {
             if (status !== 200) return;
 
-            let {data: {columns}} = this.state;
+            let {data} = this.state;
+            let {columns} = data;
 
             this.handleTaskModalClose();
-            columns[columnIndex] = _.reject(columns[columnIndex], ({taskId: id}) => id === taskId);
-            console.log('forceUpdate');
-            this.forceUpdate();
+            columns[columnIndex].tasks = _.reject(columns[columnIndex].tasks, ({taskId: id}) => id === taskId);
+            console.log(columns);
+            this.setState({data: {...data, columns}});
         });
     }
 
-    handleTaskUpdate  = (task) => {
-        const {taskId, title, text} = task;
-        return axios.post(`/api/tasks/${taskId}`, {title, text}).then(({data}) => {
-            const {data: {columns}} = this.state;
-            // columns[columnIndex]
-            // this.setState(data: {...data, columns})
+    handleTaskUpdate  = ({_id: taskId, title, text, columnIndex}) => {
+        return axios.put(`/api/tasks/${taskId}`, {title, text}).then(({status}) => {
+            if (status !== 200) return;
+
+            let {data} = this.state;
+            let {columns} = data;
+
+            this.handleTaskModalClose();
+            console.log(taskId, title, text, columnIndex);
+            console.log(columns[columnIndex].tasks);
+            columns[columnIndex].tasks = _(columns[columnIndex].tasks)
+                .map(x => ((x.taskId === taskId) ? {taskId, title} : x));
+            console.log(_(columns[columnIndex].tasks).map(x => x.taskId === taskId));
+            console.log(columns);
+            this.setState({data: {...data, columns}});
         })
     }
 

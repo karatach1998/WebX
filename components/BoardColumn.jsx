@@ -1,5 +1,4 @@
 const React = require('react');
-const styled = require('styled-components').default;
 const _ = require('underscore');
 
 
@@ -16,33 +15,51 @@ class BoardColumn extends React.Component {
                 form: null,
                 value: null
             },
-            newTitle: { input: null }
+            newTitle: {
+
+            }
         };
+    }
+
+    componentDidUpdate() {
+        this.state.data = {title: this.props.title, tasks: this.props.tasks || []};
     }
 
     handleTitleChange = (e) => {
         const {data} = this.state;
-        this.setState({data: {...data, title: e.target.value}})
-        console.log(this.state.data);
+        this.setState({data: {...data, title: e.target.value}, newTitle: true});
     }
 
-    handleTitleReset = (e) => {
-        const {data} = this.state;
-        console.log('reset');
-        // this.setState({data: {...data, active: false}});
+    handleKeyPress = (e) => {
+        if (e.key === "Enter" && e.shiftKey === false) {
+            console.log(e.key);
+            e.preventDefault();
+            this.refs.title.dispatchEvent(new Event('submit'));
+        }
     }
 
-    handleTitleSubmit = async (e) => {
+    handleTitleSubmit = (e) => {
         console.log('handleTitleSubmit');
         console.log(this.state.data.title);
-        const {data: title} = this.state;
+        const {data} = this.state;
+        const {title} = data;
         // const {value: title} = this.state.newTitle;
 
-        e.target.blur();
         e.preventDefault();
-        return;
-        this.handleTitleReset();
-        await this.props.onTitleSubmit(title, this.state.index);
+        this.setState({newTitle: false});
+        e.target.blur();
+        console.log('------------');
+        this.props.onTitleSubmit(title, this.state.index).then(_ => {
+            this.setState({data: {...data, title}});
+            console.log(this.state.data);
+        });
+    }
+
+    handleTitleBlur = (e) => {
+        console.log('blur');
+        if (this.state.newTitle) {
+            e.target.dispatchEvent(new Event('submit'));
+        }
     }
 
     handleElementClick = (e) => {
@@ -62,7 +79,8 @@ class BoardColumn extends React.Component {
     }
 
     handleNewTaskChange = (e) => {
-        this.state.newTask.value = e.target.value;
+        const {newTask} = this.state;
+        this.setState({newTask: {...newTask, value: e.target.value}});
     }
 
     handleNewTaskKeyDown = (e) => {
@@ -75,7 +93,6 @@ class BoardColumn extends React.Component {
 
     handleNewTaskSubmit = async (e) => {
         console.log('handleNewTaskSubmit');
-        const {data} = this.state;
         const {value: newTaskTitle} = this.state.newTask;
 
         e.preventDefault();
@@ -84,22 +101,30 @@ class BoardColumn extends React.Component {
         // 1. Send POST to /api/board router,
         // 2. Board schema pre-hook must update list for specified column and add the record to Task collection.
         // 3. Then it should return json === shortTask item (from column.tasks list).
-        const shortTask = await this.props.onTaskAdd(newTaskTitle, this.state.index);
-        data.tasks.push(shortTask);
-        this.setState({data});
+        this.props.onTaskAdd(newTaskTitle, this.state.index).then((task) => {
+            console.log('callback');
+            console.log('0000000000000000000000000000000000');
+            console.log(this.state);
+            let {data} = this.state;
+            let {tasks} = data;
+
+            tasks.push(task);
+            console.log({data: {...data, tasks}});
+            this.setState({data: {...data, tasks}});
+        });
     }
 
     render() {
         return (
             <div className="board-column">
                 <div className="board-column-title-wrapper">
-                    <form onSubmit={this.handleTitleSubmit}>
-                        <input type="text" className="board-input board-input-title"
-                               value={this.state.data.title}
-                               onChange={this.handleTitleChange}
-                        />
-                        <button type="submit" style={{display: 'none'}} onClick={this.handleTitleSubmit} />
-                    </form>
+                    <input ref="title"
+                           type="text" className="board-input board-input-title"
+                           value={this.state.data.title} placeholder="Enter column title here"
+                           onChange={this.handleTitleChange}
+                           onSubmit={this.handleTitleSubmit}
+                           onKeyPress={this.handleKeyPress}
+                           onBlur={this.handleTitleBlur} />
                 </div>
                 {_(this.props.tasks).map(({title}, i) => (
                     <div key={`col-${this.state.index}-${i}`} className="board-column-element board-column-element-static"
