@@ -26,7 +26,7 @@ class RegisterPage extends React.Component {
     handleSubmit = (e) => {
         e.preventDefault();
 
-        axios.post('/api/users/register').then(({status}) => {
+        axios.post('/api/users/register', this.state.user).then(({status}) => {
             if (status !== 200) {
                 this.reset();
                 return;
