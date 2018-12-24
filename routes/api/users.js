@@ -41,11 +41,12 @@ router.post('/register', (req, res) => {
                 console.log('Hashing.');
                 if (err) {
                     console.log(err);
+                    res.status(400).end();
                     return;
                 }
 
                 req.flash('success', 'You are now registered and can log in.');
-                res.redirect('/users/login');
+                res.status(200).end();
             });
         })
     })
@@ -68,22 +69,40 @@ router.get('/login', (req, res) => {
     });
 });
 
-router.post('/login',
-    passport.authenticate('local'),
-    function(req, res) {
-        console.log('111111111111111111111');
+// 200 - success
+// 404
+router.post('/login', (req, res, next) => {
+    passport.authenticate('local', (err, user, info) => {
+        console.log('PASSPORT LOGIN!');
+        console.log(user);
+        if (err) {
+            return res.status(400).json({
+                message: err.message
+            });
+        }
+        if (!user) {
+            return res.status(400).json({
+                message: 'Incorrect credentials.'
+            });
+        }
+
         const sessionId = uuid();
-        User.findOneAndUpdate({ _id: req.user._id }, { sessionId }, (err, user) => {
-            console.log('2222222222222222222222');
+        User.findByIdAndUpdate(user._id, { sessionId }, (err, user) => {
             req.session.sessionId = sessionId;
-            res.status(200).redirect('/');
+            req.session.userId = user._id;
+
+            res.status(200).json({
+                message: 'You have successfully logged in!',
+                sid: sessionId,
+                role: user.role
+            });
         });
-    }
-);
+    })(req, res, next);
+});
 
 // Logout
 router.get('/logout', (req, res) => {
-    req.session.sessionId = null;
+    req.session.destroy();
     req.flash();
     res.redirect('/');
 });
