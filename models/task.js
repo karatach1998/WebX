@@ -45,7 +45,8 @@ TaskSchema.pre('remove', async function(next) {
     const res  = await Board.findOne({_id: boardId, [`columns.${columnIndex}.tasks`]: taskId}).count();
 
     console.log(res);
-    if (res === 0) next();
+    // if (res === 0)
+    next();
 });
 
 const Task = module.exports = mongoose.model('Tasks', TaskSchema);
