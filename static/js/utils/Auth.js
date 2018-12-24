@@ -1,19 +1,27 @@
 
 class Auth {
     static isAuthenticated() {
-        return sessionStorage.getItem('sid') !== null;
+        console.log(localStorage.getItem('token'));
+        return sessionStorage.getItem('token') !== null;
     }
 
-    static authenticate(sid) {
-        sessionStorage.setItem('sid', sid);
+    static isAdmin() {
+        return sessionStorage.getItem('role') === 'admin';
+    }
+
+    static authenticate(token, role) {
+        console.log('authenticate');
+        sessionStorage.setItem('token', token);
+        sessionStorage.setItem('role', role);
     }
 
     static deauthenticate() {
-        sessionStorage.removeItem('sid');
+        console.log('deauthenticate');
+        sessionStorage.removeItem('token');
     }
 
-    static getSid() {
-        return sessionStorage.getItem('sid');
+    static getRole() {
+        return sessionStorage.getItem('role');
     }
 }
 

@@ -3,6 +3,7 @@ const { withRouter, Link } = require('react-router-dom');
 const Modal = require('react-modal');
 const styled = require('styled-components').default;
 const axios = require('axios');
+const _ = require('underscore');
 
 const { hexToRgb, rgbToHsl } = require('../utils/colorConverter');
 const Auth = require('../static/js/utils/Auth');
@@ -64,11 +65,61 @@ const AvatarButton = styled(Button)`
     }
 `;
 
+const SearchInput = styled.input`
+    min-width: 32px;
+    height: 32px;
+    border-radius: 3px;
+    display: block;
+    padding: 0 8px 0 6px;
+    text-decoration: none;
+    float: left;
+    font-family: Helvetica Neue,Arial,Helvetica,sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 32px;
+    transition: .1s ease;
+    
+    color: black;
+    background: ${props => {let {h, s, l} = rgbToHsl(hexToRgb(props.bgcolor)); return `hsla(${h}, ${s * 0.5}%, ${l * 3}%, 0.9)`;}};
+    
+    :hover {
+        background: ${props => {let {h, s, l} = rgbToHsl(hexToRgb(props.bgcolor)); return `hsl(${h}, ${s * 0.9}%, ${l * 2}%)`;}};
+    }
+    
+    :active {
+        background: ${props => {let {h, s, l} = rgbToHsl(hexToRgb(props.bgcolor)); return `hsl(${h}, ${s}%, ${l * 2}%)`;}};
+    }
+`;
+
 Modal.setAppElement('#root');
 
 class Header extends React.Component {
     state = {
-        newBoard: null
+        newBoard: null,
+        query: ''
+    }
+
+    handleSearchChange = (e) => {
+        this.setState({query: e.target.value});
+    }
+
+    handleSearchKeyPress = (e) => {
+        if (e.key === "Enter" && e.shiftKey === false) {
+            this.handleSearchSubmit(e);
+        }
+    }
+
+    handleSearchSubmit = (e) => {
+        const {query} = this.state;
+
+        const params = _(query.split(';'))
+            .map(s => s.trim())
+            .map(s => s.split([':']))
+            .reduce((obj, [key, value]) => ({...obj, [key]: value}), {});
+        console.log(params);
+
+        e.target.blur();
+        this.props.onAdminQuery(params);
     }
 
     handleNewBoardModalOpen = () => {
@@ -115,6 +166,16 @@ class Header extends React.Component {
                         <span className="header-btn-text">Доски</span>
                     </Button>
                 </div>
+                {Auth.isAdmin() && (
+                    <div className="header-btn-wrapper">
+                        <SearchInput bgcolor={this.props.bgcolor}
+                                     value={this.state.query}
+                                     placeholder={'Enter query here ...'}
+                                     onChange={this.handleSearchChange}
+                                     onKeyPress={this.handleSearchKeyPress}
+                                     onSubmit={this.handleSearchSubmit} />
+                    </div>
+                )}
                 <div className="header-right-aligner">
                     <div className="header-r-btn-wrapper">
                         <Button to="#" bgcolor={this.props.bgcolor} onClick={this.handleNewBoardModalOpen}>

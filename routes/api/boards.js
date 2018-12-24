@@ -4,6 +4,7 @@ const _ = require('underscore');
 
 const Board = require('../../models/board');
 const Task = require('../../models/task');
+const User = require('../../models/user');
 
 module.exports = (app) => {
     const imageRepo = require('../helpers/imageRepo')(app);
@@ -36,6 +37,34 @@ module.exports = (app) => {
                 { groupTitle: 'Other', groupBoards: other }
             ]
         });
+    });
+
+    router.get('/admin', async (req, res) => {
+        console.log('ADMIN');
+        const {userId} = req.session;
+        const requestedFields = _(['_id', 'title', 'bgUrl', 'stared']).join(' ');
+
+        const isAdmin = await User.findById(userId, (err, user) => {
+            if (err || !user) return false;
+            return user.role === 'admin';
+        });
+
+        let {ownerId, username, boardName, boardId} = req.body;
+        let query = {};
+
+        if (ownerId) query = {...query, ownerId};
+        if (username) query = {...query, username};
+        if (boardName) query = {...query, $text: {$search: boardName}};
+        if (boardId) query = {...query, _id: boardId};
+
+        console.log('QUERY');
+        console.log(query);
+
+        const boards = await Board.find(query, requestedFields).exec();
+
+        console.log('BOARDS');
+        console.log(boards);
+        res.status(200).json([{groupTitle: 'Result', groupBoards: boards}]);
     });
 
     router.post('/', async (req, res) => {

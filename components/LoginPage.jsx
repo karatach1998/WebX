@@ -27,13 +27,14 @@ class LoginPage extends React.Component {
         e.preventDefault();
 
         console.log('handleSubmit');
-        axios.post('/api/users/login', this.state.user).then(({status, data: {sid}}) => {
+        axios.post('/api/users/login', this.state.user).then(({status, data: {message, sid, role}}) => {
             if (status !== 200) {
                 this.reset(e);
                 return;
             }
 
-            Auth.authenticate(sid);
+            console.log('LOGIN SUCCESS');
+            Auth.authenticate(sid, role);
             this.props.history.push('/');
         });
     }

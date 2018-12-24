@@ -6,7 +6,8 @@ const Card = require('./Card');
 const group2class = {
     Stared: 'fas fa-star',
     Recent: 'fas fa-clock',
-    Other: 'fas fa-user'
+    Other: 'fas fa-user',
+    Result: "fas fa-list-ul"
 }
 
 
