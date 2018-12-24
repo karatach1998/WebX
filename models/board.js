@@ -7,6 +7,7 @@ const getAverageColor = require('../utils/averageColor');
 const { rgbToHex } = require('../utils/colorConverter');
 
 const BoardSchema = new Schema({
+    ownerId: { type: String,  required: true },
     title: { type: String, required: true },
     columns: { type: Array, required: true, default: [] },
     bgUrl: { type: String, required: true },

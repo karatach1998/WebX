@@ -12,20 +12,22 @@ module.exports = (app) => {
         console.log('INCOMING REQUEST!!!!');
         console.log('++++++++++++++++++++++');
         console.log(req.body);
+        console.log(req.session);
+        const {userId} = req.session;
         const requestedFields = _(['_id', 'title', 'bgUrl', 'stared']).join(' ');
 
         // Get stared boards
-        const stared = await Board.find({ stared: true }, requestedFields);
+        const stared = await Board.find({ ownerId: userId, stared: true }, requestedFields);
         console.log(stared);
 
         // Get recent boards
         // TODO(sergey): rename field 'lastRequestTime' to 'updatedAt'.
-        const recent = await Board.find({}, requestedFields, { sort: '-lastRequestTime' });
+        const recent = await Board.find({ ownerId: userId }, requestedFields, { sort: '-lastRequestTime' });
         console.log(recent);
 
         // Get all boards
         const other = await Board
-            .find({ _id: { '$nin': _(stared).map(({_id}) => _id) } }, requestedFields);
+            .find({ _id: { '$nin': _(stared).map(({_id}) => _id) }, ownerId: userId }, requestedFields);
 
         res.json({
             groups: [
@@ -37,11 +39,12 @@ module.exports = (app) => {
     });
 
     router.post('/', async (req, res) => {
-        const { title } = req.body;
+        const {title} = req.body;
+        const {userId} = req.session;
         console.log('77777777777777777777777777777');
         console.log(title);
 
-        Board.create({ title, bgUrl: await imageRepo.getRandomPhotoUrl() }).then(({_id: boardId}) => {
+        Board.create({title, ownerId: userId, bgUrl: await imageRepo.getRandomPhotoUrl()}).then(({_id: boardId}) => {
             res.status(200).json({boardId});
         });
     });
