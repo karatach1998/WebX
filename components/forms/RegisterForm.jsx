@@ -4,7 +4,7 @@ const { Link } = require('react-router-dom');
 const RegisterForm = ({onSubmit, onChange, errors, user}) => (
     <div className="login-container-parent">
         <div className="login-container-child">
-            <form className="login-form" method="post">
+            <form className="login-form" action="/" onSubmit={onSubmit}>
                 <h1 className="login-text">Register</h1>
 
                 <div className="login-input-container">
