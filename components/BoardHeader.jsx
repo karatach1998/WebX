@@ -97,6 +97,7 @@ class BoardHeader extends React.Component {
             <SubstrateLayer bgColor={this.props.bgColor}>
                 <div onSubmit={this.handleTitleSubmit}>
                     <TitleInput type="text" value={this.state.newTitle || this.props.title}
+                                data-test-id="board-header-input-title"
                                 onChange={this.handleTitleChange}
                                 onBlur={this.handleTitleSubmit} onKeyPress={this.handleTitleKeyPress} />
                 </div>

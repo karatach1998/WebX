@@ -178,7 +178,8 @@ class Header extends React.Component {
                 )}
                 <div className="header-right-aligner">
                     <div className="header-r-btn-wrapper">
-                        <Button to="#" bgcolor={this.props.bgcolor} onClick={this.handleNewBoardModalOpen}>
+                        <Button to="#" bgcolor={this.props.bgcolor} data-test-id="header-btn-new-board"
+                                onClick={this.handleNewBoardModalOpen}>
                             <span className="fas fa-plus header-btn-icon"></span>
                         </Button>
                     </div>
@@ -208,9 +209,10 @@ class Header extends React.Component {
                                transform: 'translate(-50%, -50%)',
                            }
                        }}>
-                    <form onSubmit={this.handleNewBoardSubmit} id={'newBoardForm'}>
+                    <form onSubmit={this.handleNewBoardSubmit} id={'newBoardForm'} data-test-id="header-modal-form">
                         <h3 style={{}}>Create new board</h3>
-                        <input style={{}} form={'newBoardForm'}
+                        <input data-test-id="header-modal-input"
+                               style={{}} form={'newBoardForm'}
                                value={this.state.newBoard ? this.state.newBoard.title : ''}
                                placeholder="Enter new board title ..." autoFocus={true}
                                onChange={this.handleNewBoardTitleChange}/>
