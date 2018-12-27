@@ -158,6 +158,12 @@ class Board extends React.Component {
         this.setState({newColumn: {title: e.target.value}});
     }
 
+    handleNewColumnKeyPress = (e) => {
+        if (e.key === "Enter" && e.shiftKey === false) {
+            this.handleNewColumnSubmit(e);
+        }
+    }
+
     handleNewColumnSubmit = (e) => {
         console.log('handleNewColumnSubmit');
         const {title} = this.state.newColumn;
@@ -208,8 +214,11 @@ class Board extends React.Component {
                                               onReset={this.handleNewColumnReset}
                                               onBlur={this.handleNewColumnReset} >
                                             <input type="text" className="board-input board-input-title"
-                                                   value={this.state.newColumn.title} placeholder="Enter new column title" autoFocus={true}
-                                                   onChange={this.handleNewColumnChange} />
+                                                   value={this.state.newColumn.title}
+                                                   placeholder="Enter new column title" autoFocus={true}
+                                                   onChange={this.handleNewColumnChange}
+                                                   onKeyPress={this.handleNewColumnKeyPress}
+                                                   onBlur={e => e.relatedTarget && e.relatedTarget.type === "submit" && e.stopPropagation()} />
                                             <br/>
                                             <br/>
                                             <button type="submit" className="board-btn board-btn-add-column-submit">Add column</button>
