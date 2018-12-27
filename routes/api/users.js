@@ -90,6 +90,7 @@ router.post('/login', (req, res, next) => {
         User.findByIdAndUpdate(user._id, { sessionId }, (err, user) => {
             req.session.sessionId = sessionId;
             req.session.userId = user._id;
+            req.session.userRole = user.role;
 
             res.status(200).json({
                 message: 'You have successfully logged in!',

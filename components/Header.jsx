@@ -65,6 +65,15 @@ const AvatarButton = styled(Button)`
     }
 `;
 
+const P = styled.p`
+    margin-left: 4px;
+    font-family: Helvetica Neue,Arial,Helvetica,sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 32px;
+    color: whitesmoke;
+`;
+
 const SearchInput = styled.input`
     min-width: 32px;
     height: 32px;
@@ -96,11 +105,17 @@ Modal.setAppElement('#root');
 class Header extends React.Component {
     state = {
         newBoard: null,
-        query: ''
+        query: this.props.query || {
+            username: '',
+            boardTitle: ''
+        }
     }
 
     handleSearchChange = (e) => {
-        this.setState({query: e.target.value});
+        const {name, value} = e.target;
+        const {query} = this.state;
+
+        this.setState({query: {...query, [name]: value}});
     }
 
     handleSearchKeyPress = (e) => {
@@ -112,14 +127,8 @@ class Header extends React.Component {
     handleSearchSubmit = (e) => {
         const {query} = this.state;
 
-        const params = _(query.split(';'))
-            .map(s => s.trim())
-            .map(s => s.split([':']))
-            .reduce((obj, [key, value]) => ({...obj, [key]: value}), {});
-        console.log(params);
-
         e.target.blur();
-        this.props.onAdminQuery(params);
+        this.props.onAdminQuery(query);
     }
 
     handleNewBoardModalOpen = () => {
@@ -166,17 +175,29 @@ class Header extends React.Component {
                         <span className="header-btn-text">Доски</span>
                     </Button>
                 </div>
-                {Auth.isAdmin() && (
-                    <div className="header-btn-wrapper">
-                        <SearchInput bgcolor={this.props.bgcolor}
-                                     value={this.state.query}
-                                     placeholder={'Enter query here ...'}
-                                     onChange={this.handleSearchChange}
-                                     onKeyPress={this.handleSearchKeyPress}
-                                     onSubmit={this.handleSearchSubmit} />
-                    </div>
-                )}
                 <div className="header-right-aligner">
+                    {Auth.isAdmin() && (
+                        <form style={{display: 'flex', alignItems: 'center'}} onSubmit={this.handleSearchSubmit}>
+                            <P>Username</P>
+                            <div className="header-btn-wrapper" style={{height: 'auto', marginLeft: '4px'}}>
+                                <SearchInput bgcolor={this.props.bgcolor}
+                                             name={'username'}
+                                             value={this.state.query.username}
+                                             placeholder={'Enter username here ...'}
+                                             onChange={this.handleSearchChange}
+                                             onKeyPress={this.handleSearchKeyPress} />
+                            </div>
+                            <P>Board title</P>
+                            <div className="header-btn-wrapper" style={{height: 'auto', marginLeft: '4px'}}>
+                                <SearchInput bgcolor={this.props.bgcolor}
+                                             name={'boardTitle'}
+                                             value={this.state.query.boardTitle}
+                                             placeholder={'Enter board title here ...'}
+                                             onChange={this.handleSearchChange}
+                                             onKeyPress={this.handleSearchKeyPress} />
+                            </div>
+                        </form>
+                    )}
                     <div className="header-r-btn-wrapper">
                         <Button to="#" bgcolor={this.props.bgcolor} onClick={this.handleNewBoardModalOpen}>
                             <span className="fas fa-plus header-btn-icon"></span>

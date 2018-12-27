@@ -36,14 +36,18 @@ class Main extends React.Component {
     handleAdminQuery = (params) => {
         this.setState({isSubmitting: true});
 
-        axios.get('/api/boards/admin', params).then(({status, data}) => {
-            if (status !== 200) return;
+        axios.get('/api/boards/admin', {params}).then(({status, data}) => {
+            if (status !== 200) {
+                this.setState({isSubmitting: false});
+                return;
+            }
 
             console.log('data');
             console.log(data);
             this.setState({
                 isSubmitting: false,
-                groups: data
+                groups: data,
+                query: params
             });
         });
     }
@@ -56,7 +60,7 @@ class Main extends React.Component {
 
         return (
             <div>
-                <Header bgcolor={this.BG_COLOR} userinitials="CK" onAdminQuery={this.handleAdminQuery} />
+                <Header bgcolor={this.BG_COLOR} userinitials="CK" query={this.state.query} onAdminQuery={this.handleAdminQuery} />
                 <Boards key="boards" groups={this.state.groups} />
             </div>
         );

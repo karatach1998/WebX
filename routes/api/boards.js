@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const url = require('url');
 const _ = require('underscore');
 
 const Board = require('../../models/board');
@@ -41,21 +42,26 @@ module.exports = (app) => {
 
     router.get('/admin', async (req, res) => {
         console.log('ADMIN');
-        const {userId} = req.session;
+        const {userRole} = req.session;
         const requestedFields = _(['_id', 'title', 'bgUrl', 'stared']).join(' ');
 
-        const isAdmin = await User.findById(userId, (err, user) => {
-            if (err || !user) return false;
-            return user.role === 'admin';
-        });
+        if (userRole !== 'admin') {
+            res.status(401).end();
+            return;
+        }
 
-        let {ownerId, username, boardName, boardId} = req.body;
+        let {username, boardTitle} = url.parse(req.url, true).query;
         let query = {};
 
-        if (ownerId) query = {...query, ownerId};
-        if (username) query = {...query, username};
-        if (boardName) query = {...query, $text: {$search: boardName}};
-        if (boardId) query = {...query, _id: boardId};
+        console.log(username, boardTitle);
+        if (username && !username.match(/^\s*$/)) {
+            await User.findOne({username}, (err, user) => {
+                if (!err) {
+                    _.extend(query, {ownerId: user && user._id});
+                }
+            });
+        }
+        if (boardTitle && !boardTitle.match(/^\s*$/)) _.extend(query, {title: {$regex: boardTitle}});
 
         console.log('QUERY');
         console.log(query);
