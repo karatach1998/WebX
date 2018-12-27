@@ -183,7 +183,8 @@ class Header extends React.Component {
                         </Button>
                     </div>
                     <div className="header-r-btn-wrapper">
-                        <AvatarButton to="/" bgcolor={this.props.bgcolor} onClick={() => Auth.deauthenticate()}>{this.props.userinitials}</AvatarButton>
+                        <AvatarButton to="/" bgcolor={this.props.bgcolor} data-test-id="header-btn-logout"
+                                      onClick={() => Auth.deauthenticate()}>{this.props.userinitials}</AvatarButton>
                     </div>
                 </div>
                 {/* MODALS */}
