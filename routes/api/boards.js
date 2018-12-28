@@ -42,9 +42,11 @@ module.exports = (app) => {
 
     router.get('/admin', async (req, res) => {
         console.log('ADMIN');
-        const {userRole} = req.session;
+        const {userId} = req.session;
         const requestedFields = _(['_id', 'title', 'bgUrl', 'stared']).join(' ');
 
+        const {role: userRole} = await User.findById(userId, 'role').exec();
+        console.log(userRole);
         if (userRole !== 'admin') {
             res.status(401).end();
             return;
@@ -79,7 +81,11 @@ module.exports = (app) => {
         console.log('77777777777777777777777777777');
         console.log(title);
 
-        Board.create({title, ownerId: userId, bgUrl: await imageRepo.getRandomPhotoUrl()}).then(({_id: boardId}) => {
+        // NOTE(sergeY): We can't use Board.create({...}).exec(), because Board.create returns Promise.
+        // So we can only use Board.create({...}).then() .
+        Board.create({title, ownerId: userId, bgUrl: await imageRepo.getRandomPhotoUrl()}).then((err, {_id: boardId}) => {
+            if (err) return res.status(400).end();
+
             res.status(200).json({boardId});
         });
     });

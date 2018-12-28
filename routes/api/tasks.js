@@ -37,7 +37,7 @@ router.put('/:taskId', (req, res) => {
         console.log('called');
         console.log(err);
         if (err) {
-            res.status(402).end();
+            res.status(404).end();
             return;
         }
         return res.status(200).end();
@@ -51,7 +51,7 @@ router.delete('/:taskId', async (req, res) => {
     await Task.findById(taskId, (err, task) => {
         console.log('DELETE<2>!!!!!!!!!!!!!!1');
         if (err) {
-            res.status(401).end();
+            res.status(404).end();
             return;
         }
 
