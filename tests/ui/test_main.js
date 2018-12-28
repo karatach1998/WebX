@@ -21,7 +21,7 @@ t.test('Main page', async (t) => {
             .setValue(sel('login-input-username'), 'linus')
             .setValue(sel('login-input-password'), '123')
             .submitForm(sel('login-form'))
-            .waitForExist(sel('header-btn-logout'));
+            .waitForExist(sel('header-btn-logout'), 15000);
     });
 
     await t.afterEach(async (t) => {

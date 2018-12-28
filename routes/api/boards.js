@@ -83,10 +83,10 @@ module.exports = (app) => {
 
         // NOTE(sergeY): We can't use Board.create({...}).exec(), because Board.create returns Promise.
         // So we can only use Board.create({...}).then() .
-        Board.create({title, ownerId: userId, bgUrl: await imageRepo.getRandomPhotoUrl()}).then((err, {_id: boardId}) => {
-            if (err) return res.status(400).end();
-
+        Board.create({title, ownerId: userId, bgUrl: await imageRepo.getRandomPhotoUrl()}).then(({_id: boardId}) => {
             res.status(200).json({boardId});
+        }).catch((err) => {
+            res.status(400).end();
         });
     });
 
