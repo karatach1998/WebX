@@ -8,7 +8,8 @@ const config = {
             browserName: 'chrome'
         },
         deprecationWarnings: false,
-        logLevel: 'silent'
+        logLevel: 'silent',
+        waitforTimeout: 20000
     }
 };
 

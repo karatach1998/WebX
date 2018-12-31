@@ -214,6 +214,7 @@ class Board extends React.Component {
                                               onReset={this.handleNewColumnReset}
                                               onBlur={this.handleNewColumnReset} >
                                             <input type="text" className="board-input board-input-title"
+                                                   data-test-id="board-input-new-column-title"
                                                    value={this.state.newColumn.title}
                                                    placeholder="Enter new column title" autoFocus={true}
                                                    onChange={this.handleNewColumnChange}
@@ -221,14 +222,16 @@ class Board extends React.Component {
                                                    onBlur={e => e.relatedTarget && e.relatedTarget.type === "submit" && e.stopPropagation()} />
                                             <br/>
                                             <br/>
-                                            <button type="submit" className="board-btn board-btn-add-column-submit">Add column</button>
+                                            <button type="submit" data-test-id="board-btn-new-board-submit"
+                                                    className="board-btn board-btn-add-column-submit">Add column</button>
                                             <button type="reset" className="board-btn board-add-column-cancel"><i className="fas fa-times"></i></button>
                                         </form>
                                     </div>
                                 </div>
                             ) : (
                                 <div className="board-column" style={{background: "rgba(0, 0, 0, 0)"}}>
-                                    <button className="board-btn board-btn-add-column" onClick={this.handleNewColumnCreate}>
+                                    <button className="board-btn board-btn-add-column" data-test-id="board-btn-new-column"
+                                            onClick={this.handleNewColumnCreate}>
                                         {'\u002B Добавить еще одну колонку'}
                                     </button>
                                 </div>

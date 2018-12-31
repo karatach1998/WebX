@@ -44,10 +44,6 @@ t.test('Main page', async (t) => {
             .then(url => url.split('/').slice(-1)[0])
             .then(async (boardId) => await axios.delete(`http://webx.com/api/boards/${boardId}`)
                 .catch((err) => console.log(err)));
-        // const boardId = url.split('/').slice(-1)[0];
-        // await axios.delete(`http://webx.com/api/boards/${boardId}`)
-        //     .then(() => console.log('then'))
-        //     .catch((err) => console.log(err));
     });
 
     await driver.end();

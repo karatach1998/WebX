@@ -88,9 +88,9 @@ class BoardColumn extends React.Component {
 
     render() {
         return (
-            <div className="board-column">
+            <div className="board-column" data-test-id="board-column">
                 <div className="board-column-title-wrapper">
-                    <input ref="title"
+                    <input data-test-id="board-input-column-title"
                            type="text" className="board-input board-input-title"
                            value={this.state.newTitle || this.props.title} placeholder="Enter column title here"
                            onChange={this.handleTitleChange}
@@ -98,20 +98,23 @@ class BoardColumn extends React.Component {
                            onKeyPress={this.handleTitleKeyPress}
                            onBlur={this.handleTitleReset} />
                     <button className="board-btn board-btn-delete-column"
+                            data-test-id="board-btn-delete-column"
                             onClick={this.handleColumnDelete}>
                         <i className="fas fa-trash-alt"></i>
                     </button>
                 </div>
                 {_(this.props.tasks).map(({title}, i) => (
                     <div key={`col-${this.props.index}-${i}`} className="board-column-element board-column-element-static"
+                         data-test-id="board-elem"
                          onClick={e => this.handleElementClick(e, i)}>
-                        <input className="board-column-element-text" value={title} readOnly={true} />
+                        <input className="board-column-element-text" data-test-id="board-input-elem" value={title} readOnly={true} />
                     </div>
                 ))}
                 {this.state.newTask !== null && (
                     <div key={`col-${this.props.index}-new`} className="board-column-element">
                         <div onSubmit={this.handleNewTaskSubmit}>
                             <textarea className="board-input board-input-new-element"
+                                      data-test-id="board-input-new-task-title"
                                       autoFocus={true} placeholder="Enter new task title"
                                       value={this.state.newTask}
                                       onChange={this.handleNewTaskChange}
@@ -121,7 +124,7 @@ class BoardColumn extends React.Component {
                         </div>
                     </div>
                 )}
-                <button className="board-btn board-btn-add-element" onClick={this.handleNewTaskCreate}>
+                <button className="board-btn board-btn-add-element" data-test-id="board-btn-new-task" onClick={this.handleNewTaskCreate}>
                     {'\u002B Добавить еще одну карточку'}
                 </button>
             </div>
